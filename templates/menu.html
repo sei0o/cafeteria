@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>明石高専学生食堂システム</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="js/script.js"></script>
+</head>
+<body>
+  <header>
+    <!-- ヘッダーはここに記述 -->
+    <div align=center>明石高専学生食堂システム</div>
+  </header>
+  <div id="wrapper">
+        <dl>
+          <dt class="accordion">MENU</dt>
+          <dd><a >LOGIN</a></dd>
+        </dl>
+  <!-- /#wrapper --></div>
+  {% for meal in meals %}
+  {% meal.kind %}<br>
+  {% meal.price %}<br>
+  {% meal.name %}<br>
+
+  <a>食べた!</a>
+
+  {% if meal.out_of_stock %}
+    <a>売り切れ</a>
+    {% else %}
+    <a>販売中</a>
+  {% endif %}
+
+  <form>
+    <input id="urikire" type="button" value="売り切れ" onclick="hyouji(this, 1)" data-id="{{meal.id}}">
+    <input id="urikiretenai" type="button" value="売り切れてない" onclick="hyouji(this, 0)" data-id="{{meal.id}}">
+  </form>
+  {% endfor %}
+
+  <script>
+
+    function hyouji(elem, num){
+        const data = {
+          out_of_stock: num,
+          id: elem.dataset.id
+        }
+
+        fetch('',{
+          method:'POST',
+          headers:{
+            'contest-Type':'application/json'
+          },
+          body: JSON.stringify(data)
+        })
+        .then((response) => {
+          if(!response.ok){
+            throw new Error(`${res.status} ${res.statusText}`);
+          }
+
+      if(num == 0){
+        document.getElementById("urikire").style.display="";
+        document.getElementById("urikiretenai").style.display="none";
+      } else {
+        document.getElementById("urikire").style.visibility="none";
+        document.getElementById("urikiretenai").style.visibility="";
+      }
+
+          return response.blob();
+        })
+        .catch((reason) => {
+          console.log(reason);
+        });
+
+      }
+    
+  </script>
+
+  <footer>
+    <!-- ヘッダーはここに記述 -->
+  </footer>
+</body>
+</html>

@@ -1,11 +1,103 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>食堂管理システム</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>明石高専学生食堂システム</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="js/script.js"></script>
 </head>
 <body>
-  
+  <header>
+    <!-- ヘッダーはここに記述 -->
+    <div align=center>明石高専学生食堂システム</div>
+  </header>
+  <div id="wrapper">
+        <dl>
+          <dt class="accordion">MENU</dt>
+          <dd><a >LOGIN</a></dd>
+        </dl>
+  </div>
+
+  <div align=center>本日のメニュー</div>
+  <div align=center><table border>
+    <tr>
+      <td>Aセット</td>
+      <td>{% name %}
+      {% price %}円
+      </td>
+      <td>{% out_of_stack %}</td>
+    </tr>
+    <tr>
+      <td>Bセット</td>
+      <td>{% name %}
+      {% price %}円</td>
+      <td>{% out_of_stack %}</td>
+    </tr>
+  </table></div>
+
+  <div align=center>常設メニュー</div>
+  <div align=center><table border>
+    <tr>
+      <td>カレーライス</td>
+      <td>{% price %}円</td>
+      <td>{% out_of_stack %}</td>
+    </tr>
+    <tr>
+      <td>カツカレー</td>
+      <td>{% price %}円</td>
+      <td>{% out_of_stack %}</td>
+    </tr>
+    <tr>
+      <td>親子丼</td>
+      <td>{% price %}円</td>
+      <td>{% out_of_stack %}</td>
+    </tr>
+    <tr>
+      <td>カツ丼</td>
+      <td>{% price %}円</td>
+      <td>{% out_of_stack %}</td>
+    </tr>
+    <tr>
+      <td>カレーうどん</td>
+      <td>{% price %}円</td>
+      <td>{% out_of_stack %}</td>
+    </tr>
+    <tr>
+      <td>味噌ラーメン</td>
+      <td>{% price %}円</td>
+      <td>{% out_of_stack %}</td>
+    </tr>
+    <tr>
+      <td>かけうどん</td>
+      <td>{% price %}円</td>
+      <td>{% out_of_stack %}</td>
+    </tr>
+    <tr>
+      <td>かけそば</td>
+      <td>{% price %}円</td>
+      <td>{% out_of_stack %}</td>
+    </tr>
+    <tr>
+      <td>チャーハン</td>
+      <td>{% price %}円</td>
+      <td>{% out_of_stack %}</td>
+    </tr>
+    <tr>
+      <td>ライス</td>
+      <td>{% price %}円</td>
+      <td>{% out_of_stack %}</td>
+    </tr>
+    <tr>
+      <td>和麵トッピング(わかめ・きつね揚げ・かき揚げ)</td>
+      <td>{% price %}円</td>
+      <td>{% out_of_stack %}</td>
+    </tr>
+  </table></div>
+
+  <footer>
+    <!-- ヘッダーはここに記述 -->
+  </footer>
 </body>
 </html>

@@ -1,0 +1,75 @@
+/* リセットCSS（気にしないでください） */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  width:  100%;
+  color: #fff;
+  background-color: #333333;
+  font-size: 25px;
+  font-weight: 500;
+}
+
+/* 大枠（気にしないでください） */
+body {
+  width: 100%;
+}
+h1,
+#wrapper {
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* アコーディオン ここから */
+dl {
+  width: 100%;
+  margin: 0 auto 10px auto;
+  color: #fff;
+  font-size: 15px;
+}
+
+dt {
+  position:relative;
+  display: block;
+  padding: 20px 0 20px 20px;
+  background-color: #333333;
+}
+dt:after {
+  content: "＞";
+  position: absolute;
+  top: 35%;
+  left: 95%;
+  transform: rotate(90deg);
+}
+dt.close:after {
+  content: "＜";
+  position: absolute;
+  top: 35%;
+  left: 95%;
+  transform: rotate(-270deg);
+}
+dd {
+  display: none;
+  padding: 20px 0 20px 40px;
+  color: #000;
+}
+
+table {
+  width: 80%;
+  table-layout: fixed;
+}
+
+table td {
+  overflow-wrap : break-word;
+}
+
+a {
+  border-radius: 5%;
+  text-align: center;
+  background-color: #333333;
+  color: #fff;
+  text-decoration: none;
+  padding: 5px 8px;
+}
