@@ -1,0 +1,4 @@
+<!-- 参考: https://jinja.palletsprojects.com/en/3.0.x/templates/ -->
+{% for product in products %}
+  <span>{{product.name}} ({{product.kind}}) \{{product.price}}</span><br>
+{% endfor %}
