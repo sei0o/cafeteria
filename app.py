@@ -2,7 +2,7 @@ import os
 
 from flask import Flask, render_template, request, flash, url_for, session
 from flask_sqlalchemy import SQLAlchemy
-from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
+# from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 from passlib.hash import bcrypt
 
 app = Flask(__name__)
@@ -14,7 +14,7 @@ SQLALCHEMY_DATABASE_URI="postgresql+psycopg2://team5:1qazxsw2@localhost/team5db"
 JWT_TOKEN_LOCATION=["cookies", "headers"],
 )
 
-jwt = JWTManager(app)
+# jwt = JWTManager(app)
 db = SQLAlchemy(app)
 
 ##### Database
@@ -27,20 +27,13 @@ class Product(db.Model):
   kind = db.Column(db.String(), nullable=False) # this is enum in fact
   date = db.Column(db.Date) # null if kind == P
 
-class User(db.Model):
+class Student(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   sid = db.Column(db.String(), nullable=False, unique=True)
   password_hash = db.Column(db.String(), nullable=False)
 
   def authenticate(self, pw):
     return bcrypt.verify(pw, self.password_hash)
-
-# @app.before_first_request
-# def create_user():
-#   db.create_all()
-#   db.session.add(User(sid="e1704", password_hash=bcrypt.hash("password")))
-#   db.
-#   db.session.commit()
 
 ##### Routes
 
@@ -63,12 +56,15 @@ def login():
   elif not pw:
     error = 'パスワードを入力してください'
   else:
-    user = User.query.filter_by(sid=sid).first()
+    user = Student.query.filter_by(sid=sid).first()
     if not user or not user.authenticate(pw):
       error = "パスワードか学籍番号が間違っています。"
   
   if error is None:
-    access_token = create_access_token(identity=sid)
+    # access_token = create_access_token(identity=sid)
+    session.clear()
+    session['sid'] = sid
+    flash('ログインしました。')
     return redirect(url_for('index'))
 
   flash(error)
@@ -76,7 +72,9 @@ def login():
 
 @app.route('/logout', methods=["POST"])
 def logout():
-  pass
+  session.clear()
+  flash('ログアウトしました。')
+  return redirect('/')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -91,16 +89,21 @@ def register():
     error = '学籍番号を入力してください'
   elif not pw:
     error = 'パスワードを入力してください'
-  elif User.query.filter_by(sid=sid).first() is not None:
+  elif Student.query.filter_by(sid=sid).first() is not None:
     error = '登録済みです。<a href="/login">ログインはこちら</a>'
   
   if error is None:
-    db.session.add(User(sid=sid, password_hash=bcrypt.hash(pw)))
+    db.session.add(Student(sid=sid, password_hash=bcrypt.hash(pw)))
     db.session.commit()
-    return redirect(url_for('login'))
+
+    session.clear()
+    session['sid'] = sid
+    flash('登録に成功しました。')
+    return redirect(url_for('/'))
 
   flash(error)
-  return render_template('register.html')
+  # return render_template('register.html')
+  return render_template('touroku.html')
 
 # @app.route('')
 
@@ -120,22 +123,31 @@ def product(id):
 
 # マイページ
 @app.route("/profile")
-@jwt_required()
+# @jwt_required()
 def profile():
   sid = get_jwt_identity()
-  user = User.query.filter_by(sid=sid).fetchone()
+  user = Student.query.filter_by(sid=sid).fetchone()
   
-  if not User:
+  if not Student:
     flash('ユーザーが見つかりません')
     return redirect('index')
 
-  return render_template("profile.html", user=user)
+  return render_template("mypage.html", user=user)
+  # return render_template("profile.html", user=user)
 
 # 出費を見られるページ
 @app.route("/profile/expense")
-@jwt_required()
+# @jwt_required()
 def expense():
-  return render_template("expense.html")
+  sid = get_jwt_identity()
+  user = Student.query.filter_by(sid=sid).fetchone()
+
+  if not Student:
+    flash('ユーザーが見つかりません')
+    return redirect('index')
+
+  # return render_template("expense.html", user=user)
+  return render_template("syokuhi.html", user=user)
 
 ##### API
 

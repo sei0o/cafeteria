@@ -1,24 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>明石高専学生食堂システム</title>
-  <link rel="stylesheet" href="css/style.css">
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-  <script type="text/javascript" src="js/script.js"></script>
-</head>
-<body>
-  <header>
-    <!-- ヘッダーはここに記述 -->
-    <div align=center>明石高専学生食堂システム</div>
-  </header>
-  <div id="wrapper">
-    <dl>
-      <dt class="accordion">MENU</dt>
-      <dd><a >LOGIN</a></dd>
-    </dl>
-  </div>
+{% extends "_layout.html" %}
+
+{% block title %}今日のメニュー{% endblock %}
+
+{% block main %}
+  <!-- 参考: https://jinja.palletsprojects.com/en/3.0.x/templates/ -->
+  <!--
+
+    for, ifなど、直接表示されないものは {% for ... %} に記述します。
+    x をそのまま表示するには {{ x }} のように{{ }}で囲みます。
+
+    {% for product in products %}
+      {{ product.kind  }}<br>
+      {{ product.price }}<br>
+      {{ product.name  }}<br>
+    {% endfor %}
+
+  -->
 
   <div align=center><h2>本日のメニュー</h2></div>
   <div align=center><table border>
@@ -95,9 +92,4 @@
       <td>{% out_of_stack %}</td>
     </tr>
   </table></div>
-
-  <footer>
-    <!-- ヘッダーはここに記述 -->
-  </footer>
-</body>
-</html>
+{% endblock %}
