@@ -48,7 +48,11 @@ def current_user():
 @app.route("/")
 def index():
   products = Product.query.all()
-  return render_template("index.html", products=products)
+  date = datetime.now()
+  A = list(filter(lambda p: p.kind == "A" && p.date.month == date.month && p.date.day == date.day, products))
+  B = list(filter(lambda p: p.kind == "B" && p.date.month == date.month && p.date.day == date.day, products))
+  P = list(filter(lambda p: p.kind == "P", products))
+  return render_template("index.html", products=products, A=A, B=B, P=P)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
