@@ -130,7 +130,6 @@ def product(id):
 @app.route("/menu/<id>/tabeta")
 def tabeta(id):
   product = Product.query.get(id)
-  user = current_user()
   student = current_user()
 
   expense_total = expense_total + product.price
@@ -167,13 +166,9 @@ def expense():
     return redirect('index')
 
   # return render_template("expense.html", user=user)
-  return render_template("syokuhi.html", user=user)
+  return render_template("syokuhi.html", student=student)
 
 ##### API
-
-# @app.route("/api/menu/update")
-
-# @app.route("/api/profile/edit", )
 
 @app.route("/api/dummy/get")
 def get():
