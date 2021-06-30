@@ -31,6 +31,7 @@ class Student(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   sid = db.Column(db.String(), nullable=False, unique=True)
   password_hash = db.Column(db.String(), nullable=False)
+  expense = db.Column(db.Integer, nullable=False)
 
   def authenticate(self, pw):
     return bcrypt.verify(pw, self.password_hash)
@@ -120,6 +121,17 @@ def menu():
 def product(id):
   product = Product.query.get(id)
   return render_template("product.html", product=product)
+
+# 「食べた」処理
+@app.route("/menu/<id>/tabeta")
+def tabeta(id):
+  product = Product.query.get(id)
+  user = ???
+
+  
+
+
+  return redirect("/menu/" + id)
 
 # マイページ
 @app.route("/profile")
