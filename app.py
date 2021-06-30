@@ -122,7 +122,7 @@ def product(id):
   return render_template("menu.html", product=product)
 
 # 「食べた」処理
-@app.route("/menu/<id>/tabeta")
+@app.route("/menu/<id>/tabeta", methods=["POST"])
 def tabeta(id):
   product = Product.query.get(id)
   student = current_user()
@@ -135,16 +135,15 @@ def tabeta(id):
 
   return redirect("/menu/" + id)
 
-@app.route("/menu/<id>/out_of_stock")
+@app.route("/menu/<id>/out_of_stock", methods=["POST"])
 def out_of_stock(id):
   product = Product.query.get(id)
   
   if request.form['out_of_stock'] == 1:
-  #売り切れ
-    product.out_of_stock = True
-                               
+    #売り切れ
+    product.out_of_stock = True                        
   else:
-  #在庫あり
+    #在庫あり
     product.out_of_stock = False
                   
   db.session.add(product)
