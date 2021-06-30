@@ -1,35 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>明石高専学生食堂システム</title>
-  <link rel="stylesheet" href="css/style.css">
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-  <script type="text/javascript" src="js/script.js"></script>
-</head>
-<body>
-  <header>
-    <!-- ヘッダーはここに記述 -->
-    <div align=center>明石高専学生食堂システム マイページ</div>
-  </header>
-  <div id="wrapper">
-    <dl>
-      <dt class="accordion">MENU</dt>
-      <dd><a >LOGIN</a></dd>
-    </dl>
-  </div>
+{% extends "_layout.html" %}
+
+{% block title %}マイページ{% endblock %}
+
+{% block main %}
   
   <div align=center><table border>
     <tr>
       <td>{% users_name %}</td>
     </tr>
     <tr>
-      <td>食費の確認</td>
+      <td><a href="/profile/expense">食費の確認</a></td>
     </tr>
-
-    <footer>
-      <!-- ヘッダーはここに記述 -->
-    </footer>
-  </body>
-  </html>
+{% endblock %}
