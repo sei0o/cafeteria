@@ -1,8 +1,7 @@
 import os
 
-from flask import Flask, render_template, request, flash, url_for, session
+from flask import Flask, render_template, request, flash, url_for, session, redirect
 from flask_sqlalchemy import SQLAlchemy
-# from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 from passlib.hash import bcrypt
 
 app = Flask(__name__)
@@ -31,10 +30,18 @@ class Student(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   sid = db.Column(db.String(), nullable=False, unique=True)
   password_hash = db.Column(db.String(), nullable=False)
-  expense = db.Column(db.Integer, nullable=False)
+  expense = db.Column(db.Integer, nullable=False, default=0)
+
 
   def authenticate(self, pw):
     return bcrypt.verify(pw, self.password_hash)
+
+#### Helpers
+
+def current_user():
+  if session['sid']:
+    return Student.query.filter_by(sid=session['sid']).first()
+  return None
 
 ##### Routes
 
@@ -75,12 +82,13 @@ def login():
 def logout():
   session.clear()
   flash('ログアウトしました。')
-  return redirect('/')
+  return redirect(url_for('index'))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
   if request.method == 'GET':
-    return render_template('register.html')
+    # return render_template('register.html')
+    return render_template('touroku.html')
   
   sid = request.form['sid']
   pw = request.form['password']
@@ -94,19 +102,17 @@ def register():
     error = '登録済みです。<a href="/login">ログインはこちら</a>'
   
   if error is None:
-    db.session.add(Student(sid=sid, password_hash=bcrypt.hash(pw)))
+    db.session.add(Student(sid=sid, password_hash=bcrypt.hash(pw), expense=0))
     db.session.commit()
 
     session.clear()
     session['sid'] = sid
     flash('登録に成功しました。')
-    return redirect(url_for('/'))
+    return redirect(url_for('index'))
 
   flash(error)
   # return render_template('register.html')
   return render_template('touroku.html')
-
-# @app.route('')
 
 
 # メニュー一覧
@@ -115,21 +121,36 @@ def menu():
   products = Product.query.all()
   return render_template("menu.html", products=products)
 
-
 # メニューの個別ページ
 @app.route("/menu/<id>")
 def product(id):
   product = Product.query.get(id)
   return render_template("product.html", product=product)
 
+# 「食べた」処理
+@app.route("/menu/<id>/tabeta")
+def tabeta(id):
+  product = Product.query.get(id)
+  student = current_user()
+
+  expense_total = expense_total + product.price
+  student.expense = expense_total
+
+  db.session.add(student)
+  db.session.commit()
+
+  return redirect("/menu/" + id)
+
+@app.route("/menu/<id>/out_of_stock")
+def out_of_stock(id):
+  # todo
+
 # マイページ
 @app.route("/profile")
-# @jwt_required()
 def profile():
-  sid = get_jwt_identity()
-  user = Student.query.filter_by(sid=sid).fetchone()
+  user = current_user()
   
-  if not Student:
+  if not user:
     flash('ユーザーが見つかりません')
     return redirect('index')
 
@@ -138,23 +159,17 @@ def profile():
 
 # 出費を見られるページ
 @app.route("/profile/expense")
-# @jwt_required()
 def expense():
-  sid = get_jwt_identity()
-  user = Student.query.filter_by(sid=sid).fetchone()
+  user = current_user()
 
-  if not Student:
+  if not user:
     flash('ユーザーが見つかりません')
     return redirect('index')
 
   # return render_template("expense.html", user=user)
-  return render_template("syokuhi.html", user=user)
+  return render_template("syokuhi.html", student=student)
 
 ##### API
-
-# @app.route("/api/menu/update")
-
-# @app.route("/api/profile/edit", )
 
 @app.route("/api/dummy/get")
 def get():

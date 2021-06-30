@@ -23,60 +23,13 @@
 
   <div align=center><h2>常設メニュー</h2></div>
   <div align=center><table border>
+
+    {% for product in products %}
     <tr>
-      <td>カレーライス</td>
+      <td>{{ product.name }}</td>
       <td>{{ product.price }}円</td>
       <td>{{ product.out_of_stack }}</td>
     </tr>
-    <tr>
-      <td>カツカレー</td>
-      <td>{{ product.price }}円</td>
-      <td>{{ product.out_of_stack }}</td>
-    </tr>
-    <tr>
-      <td>親子丼</td>
-      <td>{{ product.price }}円</td>
-      <td>{{ product.out_of_stack }}</td>
-    </tr>
-    <tr>
-      <td>カツ丼</td>
-      <td>{{ product.price }}円</td>
-      <td>{{ product.out_of_stack }}</td>
-    </tr>
-    <tr>
-      <td>カレーうどん</td>
-      <td>{{ product.price }}円</td>
-      <td>{{ product.out_of_stack }}</td>
-    </tr>
-    <tr>
-      <td>味噌ラーメン</td>
-      <td>{{ product.price }}円</td>
-      <td>{{ product.out_of_stack }}</td>
-    </tr>
-    <tr>
-      <td>かけうどん</td>
-      <td>{{ product.price }}円</td>
-      <td>{{ product.out_of_stack }}</td>
-    </tr>
-    <tr>
-      <td>かけそば</td>
-      <td>{{ product.price }}円</td>
-      <td>{{ product.out_of_stack }}</td>
-    </tr>
-    <tr>
-      <td>チャーハン</td>
-      <td>{{ product.price }}円</td>
-      <td>{{ product.out_of_stack }}</td>
-    </tr>
-    <tr>
-      <td>ライス</td>
-      <td>{{ product.price }}円</td>
-      <td>{{ product.out_of_stack }}</td>
-    </tr>
-    <tr>
-      <td>和麵トッピング(わかめ・きつね揚げ・かき揚げ)</td>
-      <td>{{ product.price }}円</td>
-      <td>{{ product.out_of_stack }}</td>
-    </tr>
-  </table></div>
+    {% endfor %}      
+
 {% endblock %}
