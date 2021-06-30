@@ -45,9 +45,11 @@ def current_user():
 
 ##### Routes
 
+# メニュー一覧
 @app.route("/")
 def index():
-  return render_template("index.html")
+  products = Product.query.all()
+  return render_template("index.html", products=products)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -114,18 +116,11 @@ def register():
   # return render_template('register.html')
   return render_template('touroku.html')
 
-
-# メニュー一覧
-@app.route("/menu")
-def menu():
-  products = Product.query.all()
-  return render_template("menu.html", products=products)
-
 # メニューの個別ページ
 @app.route("/menu/<id>")
 def product(id):
   product = Product.query.get(id)
-  return render_template("product.html", product=product)
+  return render_template("menu.html", product=product)
 
 # 「食べた」処理
 @app.route("/menu/<id>/tabeta")
