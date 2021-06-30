@@ -31,6 +31,7 @@ class Student(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   sid = db.Column(db.String(), nullable=False, unique=True)
   password_hash = db.Column(db.String(), nullable=False)
+  expense = db.Column(db.Integer, nullable=False)
 
   def authenticate(self, pw):
     return bcrypt.verify(pw, self.password_hash)
