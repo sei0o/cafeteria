@@ -73,3 +73,10 @@ a {
   text-decoration: none;
   padding: 5px 8px;
 }
+
+/* Flash */
+.flash {
+  border-radius: 3px;
+  color: darkred;
+  background-color: lightcoral;
+}
