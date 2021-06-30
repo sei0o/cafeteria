@@ -32,7 +32,6 @@ class Student(db.Model):
   password_hash = db.Column(db.String(), nullable=False)
   expense = db.Column(db.Integer, nullable=False, default=0)
 
-
   def authenticate(self, pw):
     return bcrypt.verify(pw, self.password_hash)
 
@@ -138,7 +137,20 @@ def tabeta(id):
 
 @app.route("/menu/<id>/out_of_stock")
 def out_of_stock(id):
-  # todo
+  product = Product.query.get(id)
+  
+  if request.form['out_of_stock'] == 1:
+  #売り切れ
+    product.out_of_stock = True
+                               
+  else:
+  #在庫あり
+    product.out_of_stock = False
+                  
+  db.session.add(product)
+  db.session.commit()
+                  
+  return redirect("/menu/" + id)
 
 # マイページ
 @app.route("/profile")
