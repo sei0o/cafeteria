@@ -131,9 +131,13 @@ def product(id):
 def tabeta(id):
   product = Product.query.get(id)
   user = current_user()
+  student = current_user()
 
+  expense_total = expense_total + product.price
+  student.expense = expense_total
 
-
+  db.session.add(student)
+  db.session.commit()
 
   return redirect("/menu/" + id)
 
