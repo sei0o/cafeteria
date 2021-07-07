@@ -13,7 +13,6 @@ SQLALCHEMY_DATABASE_URI="postgresql+psycopg2://team5:1qazxsw2@localhost/team5db"
 JWT_TOKEN_LOCATION=["cookies", "headers"],
 )
 
-# jwt = JWTManager(app)
 db = SQLAlchemy(app)
 
 ##### Database
@@ -70,7 +69,6 @@ def login():
       error = "パスワードか学籍番号が間違っています。"
   
   if error is None:
-    # access_token = create_access_token(identity=sid)
     session.clear()
     session['sid'] = sid
     flash('ログインしました。')
@@ -127,8 +125,7 @@ def tabeta(id):
   product = Product.query.get(id)
   student = current_user()
 
-  expense_total = expense_total + product.price
-  student.expense = expense_total
+  student.expense += product.price
 
   db.session.add(student)
   db.session.commit()
@@ -171,6 +168,8 @@ def expense():
   if not user:
     flash('ユーザーが見つかりません')
     return redirect('index')
+  
+  # todo: 最終の記録が先週なら0円  
 
   # return render_template("expense.html", user=user)
   return render_template("syokuhi.html", student=student)
