@@ -7,17 +7,17 @@
   <div align=center><table border>
     <tr>
       <td>Aセット</td>
-      <td>{{ product.name }}
-        {{ product.price }}円
+      <td>{{ A.name }}
+        {{ A.price }}円
       </td>
-      <td>{{ product.out_of_stack }}</td>
+      <td>{{ A.out_of_stack }}</td>
     </tr>
     <tr>
       <td>Bセット</td>
-      <td>{{ product.name }}
-        {{ product.price }}円
+      <td>{{ B.name }}
+        {{ B.price }}円
       </td>
-      <td>{{ product.out_of_stack }}</td>
+      <td>{{ B.out_of_stack }}</td>
     </tr>
   </table></div>
 
@@ -26,9 +26,9 @@
 
     {% for product in products %}
     <tr>
-      <td>{{ product.name }}</td>
-      <td>{{ product.price }}円</td>
-      <td>{{ product.out_of_stack }}</td>
+      <td>{{ P.name }}</td>
+      <td>{{ P.price }}円</td>
+      <td>{{ P.out_of_stack }}</td>
     </tr>
     {% endfor %}      
 
