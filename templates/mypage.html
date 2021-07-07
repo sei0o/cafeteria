@@ -3,10 +3,11 @@
 {% block title %}マイページ{% endblock %}
 
 {% block main %}
-  
+
   <div align=center><table border>
     <tr>
-      <td>{% users_name %}</td>
+      <td>{% user.name %}</td>
+      
     </tr>
     <tr>
       <td><a href="/profile/expense">食費の確認</a></td>

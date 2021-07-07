@@ -3,6 +3,7 @@ import os
 from flask import Flask, render_template, request, flash, url_for, session, redirect
 from flask_sqlalchemy import SQLAlchemy
 from passlib.hash import bcrypt
+import datetime 
 
 app = Flask(__name__)
 app.config.from_mapping(
@@ -30,6 +31,7 @@ class Student(db.Model):
   sid = db.Column(db.String(), nullable=False, unique=True)
   password_hash = db.Column(db.String(), nullable=False)
   expense = db.Column(db.Integer, nullable=False, default=0)
+  last_purchase = db.Column(db.Date)
 
   def authenticate(self, pw):
     return bcrypt.verify(pw, self.password_hash)
@@ -37,9 +39,16 @@ class Student(db.Model):
 #### Helpers
 
 def current_user():
-  if session['sid']:
+  if 'sid' in session:
     return Student.query.filter_by(sid=session['sid']).first()
   return None
+
+def back():
+  return request.args.get('next') or request.referrer or "/"
+
+# @app.before_request
+# def before():
+#   current_user = current_user()
 
 ##### Routes
 
@@ -47,11 +56,12 @@ def current_user():
 @app.route("/")
 def index():
   products = Product.query.all()
-  date = datetime.now()
-  A = list(filter(lambda p: p.kind == "A" && p.date.month == date.month && p.date.day == date.day, products))
-  B = list(filter(lambda p: p.kind == "B" && p.date.month == date.month && p.date.day == date.day, products))
-  P = list(filter(lambda p: p.kind == "P", products))
-  return render_template("index.html", products=products, A=A, B=B, P=P)
+  date = datetime.datetime.now()
+  a = list(filter(lambda p: p.kind == "A" and p.date and p.date.month == date.month and p.date.day == date.day, products))[0]
+  b = list(filter(lambda p: p.kind == "B" and p.date and p.date.month == date.month and p.date.day == date.day, products))[0]
+  p = list(filter(lambda p: p.kind == "P", products))
+
+  return render_template("index.html", products=products, a=a, b=b, p=p)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -76,7 +86,7 @@ def login():
     session.clear()
     session['sid'] = sid
     flash('ログインしました。')
-    return redirect(url_for('index'))
+    return redirect('/')
 
   flash(error)
   return render_template('login.html')
@@ -85,7 +95,7 @@ def login():
 def logout():
   session.clear()
   flash('ログアウトしました。')
-  return redirect(url_for('index'))
+  return redirect('/')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -111,7 +121,7 @@ def register():
     session.clear()
     session['sid'] = sid
     flash('登録に成功しました。')
-    return redirect(url_for('index'))
+    return redirect('/')
 
   flash(error)
   # return render_template('register.html')
@@ -127,24 +137,38 @@ def product(id):
 @app.route("/menu/<id>/tabeta", methods=["POST"])
 def tabeta(id):
   product = Product.query.get(id)
-  student = current_user()
+  user = current_user()
+  if not user:
+    flash('ログインしてください')
+    return redirect(back())
 
-  student.expense += product.price
+  today = datetime.date.today()
+  mon = today - datetime.timedelta(days=today.weekday())
+  if not user.last_purchase or user.last_purchase < mon:
+    user.expense = 0
+    db.session.add(user)
+    db.session.commit()
 
-  db.session.add(student)
+  user.expense += product.price
+  user.last_purchase = today
+
+  db.session.add(user)
   db.session.commit()
 
   return redirect("/menu/" + id)
 
 @app.route("/menu/<id>/out_of_stock", methods=["POST"])
 def out_of_stock(id):
+  user = current_user()
+  if not user:
+    flash('ログインしてください')
+    return redirect(back())
+
   product = Product.query.get(id)
   
   if request.form['out_of_stock'] == 1:
-    #売り切れ
     product.out_of_stock = True                        
   else:
-    #在庫あり
     product.out_of_stock = False
                   
   db.session.add(product)
@@ -156,10 +180,9 @@ def out_of_stock(id):
 @app.route("/profile")
 def profile():
   user = current_user()
-  
   if not user:
-    flash('ユーザーが見つかりません')
-    return redirect('index')
+    flash('ログインしてください')
+    return redirect(back())
 
   return render_template("mypage.html", user=user)
   # return render_template("profile.html", user=user)
@@ -168,21 +191,12 @@ def profile():
 @app.route("/profile/expense")
 def expense():
   user = current_user()
-
   if not user:
-    flash('ユーザーが見つかりません')
-    return redirect('index')
-  
-  # todo: 最終の記録が先週なら0円  
+    flash('ログインしてください')
+    return redirect(back())
 
   # return render_template("expense.html", user=user)
-  return render_template("syokuhi.html", student=student)
-
-##### API
-
-@app.route("/api/dummy/get")
-def get():
-  return { data: 'hogehoge' }
+  return render_template("syokuhi.html", user=user)
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0', port=8085)

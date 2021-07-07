@@ -1,43 +1,37 @@
 {% extends "_layout.html" %}
 
-{% block title %}{{product.id}}{% endblock %}
+{% block title %}{{product.name}}{% endblock %}
 
 {% block main %}
 
-    {% if product.out_of_stock %}
-    <a>売り切れ</a>
+  <span class="kind">
+    {% if product.kind == "A" %}
+      {{ product.date }}のAメニュー
+    {% elif product.kind == "B" %}
+      {{ product.date }}のBメニュー
     {% else %}
-    <a>販売中</a>
+      単品メニュー
     {% endif %}
+  </span>
 
-    <form action="/menu/{{product.id}}/tabeta" method="POST">
-      <input id="tabeta" type="submit" value="食べた!" onclick="tabeta()">
-    </form>
+  <span class="status">
+    {% if product.out_of_stock %}
+    売り切れ
+    {% else %}
+    販売中
+    {% endif %}
+  </span>
 
-    <form action="/menu/{{product.id}}/urikire" method="POST">
-      <input id="urikire" type="submit" value="売り切れ" onclick="hyouji(this, 1)">
-      <input id="urikiretenai" type="submit" value="売り切れてない" onclick="hyouji(this, 0)">
-    </form>
+  <form action="/menu/{{product.id}}/out_of_stock" method="POST">
+    {% if product.out_of_stock %}
+      <button type="submit" name="out_of_stock" value="0">売り切れてない</button>
+    {% else %}
+      <button type="submit" name="out_of_stock" value="1">売り切れた</button>
+    {% endif %}
+  </form><br>
 
-    <script>
-      function tabeta(){
-        const data = {
-          id:elem.dataset.id
-        }
-      }
+  <form action="/menu/{{product.id}}/tabeta" method="POST">
+    <input id="tabeta" type="submit" value="食べた!">
+  </form>
 
-      function hyouji(elem, num){
-        const data = {
-          out_of_stock: num,
-          id: elem.dataset.id
-        }
-        if(num == 0){
-          document.getElementById("urikire").style.display="";
-          document.getElementById("urikiretenai").style.display="none";
-        } else {
-          document.getElementById("urikire").style.display="none";
-          document.getElementById("urikiretenai").style.display="";
-        }
-      }
-    </script>
 {% endblock %}

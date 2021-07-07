@@ -65,7 +65,7 @@ table td {
   overflow-wrap : break-word;
 }
 
-a {
+a, input[type="submit"], button {
   border-radius: 5%;
   text-align: center;
   background-color: #333333;
@@ -79,4 +79,26 @@ a {
   border-radius: 3px;
   color: darkred;
   background-color: lightcoral;
+  padding: 0.5rem;
+  margin: 1rem;
+}
+
+.in_stock {
+  color: palegreen;
+}
+
+.out_of_stock {
+  color: palevioletred;
+}
+
+.expense {
+  font-size: 3rem;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+td {
+  padding: 3px;
 }

@@ -3,33 +3,50 @@
 {% block title %}今日のメニュー{% endblock %}
 
 {% block main %}
-  <div align=center><h2>本日のメニュー</h2></div>
   <div align=center><table border>
     <tr>
       <td>Aセット</td>
-      <td>{{ A.name }}
-        {{ A.price }}円
+      <td><a href="/menu/{{ a.id }}">{{ a.name }}</a><br>
+        {{ a.price }}円
       </td>
-      <td>{{ A.out_of_stack }}</td>
+      <td>
+        {% if a.out_of_stock %}
+          <span class="out_of_stock">売り切れ</span>
+        {% else %}
+          <span class="in_stock">販売中</span>
+        {% endif %}
+      </td>
     </tr>
     <tr>
       <td>Bセット</td>
-      <td>{{ B.name }}
-        {{ B.price }}円
+      <td><a href="/menu/{{ b.id }}">{{ b.name }}</a><br>
+        {{ b.price }}円
       </td>
-      <td>{{ B.out_of_stack }}</td>
+      <td>
+        {% if b.out_of_stock %}
+          <span class="out_of_stock">売り切れ</span>
+        {% else %}
+          <span class="in_stock">販売中</span>
+        {% endif %}
+      </td>
     </tr>
   </table></div>
 
-  <div align=center><h2>常設メニュー</h2></div>
+  <h2 style="text-align: center;">常設メニュー</h2>
   <div align=center><table border>
 
-    {% for product in products %}
+    {% for product in p %}
     <tr>
-      <td>{{ P.name }}</td>
-      <td>{{ P.price }}円</td>
-      <td>{{ P.out_of_stack }}</td>
+      <td><a href="/menu/{{ product.id }}">{{ product.name }}</a>
+      <td>{{ product.price }}円</td>
+      <td>
+        {% if product.out_of_stock %}
+          <span class="out_of_stock">売り切れ</span>
+        {% else %}
+          <span class="in_stock">販売中</span>
+        {% endif %}
+      </td>
     </tr>
-    {% endfor %}      
+    {% endfor %}
 
 {% endblock %}

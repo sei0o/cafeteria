@@ -4,8 +4,20 @@
 
 {% block main %}
   
-  <div align=center>
+  <div align="center">
     今週の食費は<br>
-    {{ student.expense }}円
+    <span class="expense">{{ user.expense }}</span>円
+  </div>
+
+  <a
+    href="https://twitter.com/share?ref_src=twsrc%5Etfw"
+    class="twitter-share-button"
+    data-size="large"
+    data-text="今週の食費は{{ user.expense }}円です！"
+    data-related=""
+    data-lang="ja"
+    data-dnt="true"
+    data-show-count="false">ツイート</a>
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 {% endblock %}

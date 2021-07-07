@@ -6,9 +6,9 @@
   <title>
     {% block title %}{% endblock %} | 明石高専食堂管理システム
   </title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-  <script type="text/javascript" src="js/script.js"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}  "></script>
 </head>
 <body>
   <header>
@@ -18,7 +18,11 @@
   <div id="wrapper">
     <dl>
       <dt class="accordion">MENU</dt>
-      <dd><a href="/login">LOGIN</a></dd>
+      <dd>
+        <a href="/login">ログイン</a>
+        <a href="/profile">マイページ</a>
+        <a href="/logout">ログアウト</a>
+      </dd>
     </dl>
   </div>
 
@@ -33,8 +37,10 @@
       {% endif %}
     {% endwith %}
 
+    <h2 style="text-align: center;">{{ self.title() }}</h2>
     {% block main %}
     {% endblock %}  
+
   </main>
 </body>
 </html>
