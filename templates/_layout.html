@@ -21,8 +21,8 @@
       <dd>
         <a href="/">メニュー</a>
         <a href="/login">ログイン</a>
+        <a href="/register">新規登録</a>
         <a href="/profile">マイページ</a>
-        <a href="/logout">ログアウト</a>
       </dd>
     </dl>
   </div>
@@ -38,7 +38,7 @@
       {% endif %}
     {% endwith %}
 
-    <h2 style="text-align: center;">{{ self.title() }}</h2>
+    <h2 class='pagetitle'>{{ self.title() }}</h2>
     {% block main %}
     {% endblock %}  
 

@@ -155,6 +155,8 @@ def tabeta(id):
   db.session.add(user)
   db.session.commit()
 
+  flash(product.name + "の食費を記録しました。")
+
   return redirect("/menu/" + id)
 
 @app.route("/menu/<id>/out_of_stock", methods=["POST"])
@@ -166,7 +168,7 @@ def out_of_stock(id):
 
   product = Product.query.get(id)
   
-  if request.form['out_of_stock'] == 1:
+  if request.form['out_of_stock'] == "1":
     product.out_of_stock = True                        
   else:
     product.out_of_stock = False

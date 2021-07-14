@@ -1,15 +1,12 @@
 {% extends "_layout.html" %}
 
-{% block title %}マイページ{% endblock %}
+{% block title %}{{ user.sid }}さんのマイページ{% endblock %}
 
 {% block main %}
 
-  <div align=center><table border>
-    <tr>
-      <td>{% user.name %}</td>
-      
-    </tr>
-    <tr>
-      <td><a href="/profile/expense">食費の確認</a></td>
-    </tr>
+<div>
+  <a href="/profile/expense">食費の確認</a>
+  <a href="/logout">ログアウト</a>
+</div>
+
 {% endblock %}

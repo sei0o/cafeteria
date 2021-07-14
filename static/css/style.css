@@ -67,7 +67,7 @@ table td {
 }
 
 a, input[type="submit"], button {
-  border-radius: 5%;
+  border-radius: 3px;
   text-align: center;
   background-color: #333333;
   color: #fff;
@@ -78,28 +78,67 @@ a, input[type="submit"], button {
 /* Flash */
 .flash {
   border-radius: 3px;
-  color: darkred;
-  background-color: lightcoral;
+  color: #6d5c21;
+  background-color:#f3d054;
   padding: 0.5rem;
   margin: 1rem;
 }
 
+.flash, .flash li {
+  list-style-type: none;
+}
+
 .in_stock {
-  color: palegreen;
+  color: #299f11;
 }
 
 .out_of_stock {
-  color: palevioletred;
+  color: #f45044;
 }
 
 .expense {
   font-size: 3rem;
 }
 
-table {
-  border-collapse: collapse;
+.menulist tr {
+  display: block;
+  margin-top: 1rem;
 }
 
 td {
   padding: 3px;
+}
+
+.product_link { 
+  display: inline-block;
+  margin: 0.3rem;
+}
+
+main {
+  padding: 1rem;
+}
+
+.menulist {
+  border-collapse: collapse;
+  border-spacing: 0 15px;
+  border: none;  
+}
+
+.menulist td {
+  border: solid 1px #aaa;
+  display: block;
+  border-bottom: none;
+}
+
+.menulist td:last-of-type {
+  border-bottom: solid 1px #aaa;
+}
+
+input[type="text"], input[type="password"], input[type="submit"], button[name="out_of_stock"] {
+  width: 100%;
+}
+
+.pagetitle {
+  text-align: center;
+  margin-bottom: 0.5rem;
 }
